@@ -4,7 +4,6 @@ let card2 = null;
 let cardCount = 0;
 let noClicking = false;
 
-
 const COLORS = [
   "red",
   "blue",
@@ -15,7 +14,7 @@ const COLORS = [
   "blue",
   "green",
   "orange",
-  "purple"
+  "purple",
 ];
 
 // here is a helper function to shuffle an array
@@ -66,47 +65,44 @@ function createDivsForColors(colorArray) {
 function handleCardClick(event) {
   // you can use event.target to see which element was clicked
   if (noClicking) return;
-  if (event.target.classList.contains('flipped')) return;
-  
+  if (event.target.classList.contains("flipped")) return;
+
   let currentCard = event.target;
   currentCard.style.backgroundColor = currentCard.classList[0];
-  
- 
 
   if (!card1 || !card2) {
     noClick = true;
-    currentCard.classList.add('flipped');
+    currentCard.classList.add("flipped");
     card1 = card1 || currentCard;
     card2 = currentCard === card1 ? null : currentCard;
   }
 
-    if (card1 && card2) {
-      noClicking = true;
-      
-      let cardClass1 = card1.className;
-      let cardClass2 = card2.className;
+  if (card1 && card2) {
+    noClicking = true;
 
-      if (cardClass1 === cardClass2) {
-        cardCount += 2;
-        card1.removeEventListener('click', handleCardClick);
-        card2.removeEventListener('click', handleCardClick);
+    let cardClass1 = card1.className;
+    let cardClass2 = card2.className;
+
+    if (cardClass1 === cardClass2) {
+      cardCount += 2;
+      card1.removeEventListener("click", handleCardClick);
+      card2.removeEventListener("click", handleCardClick);
+      card1 = null;
+      card2 = null;
+      noClicking = false;
+    } else {
+      setTimeout(function () {
+        card1.style.backgroundColor = "";
+        card2.style.backgroundColor = "";
+        card1.classList.remove("flipped");
+        card2.classList.remove("flipped");
         card1 = null;
         card2 = null;
         noClicking = false;
-
-    } else {
-        setTimeout(function() {
-          card1.style.backgroundColor = "";
-          card2.style.backgroundColor = "";
-          card1.classList.remove('flipped');
-          card2.classList.remove('flipped');
-          card1 = null;
-          card2 = null;
-          noClicking = false;
-    }, 1000);
+      }, 400);
+    }
   }
-}
-    if (cardCount === COLORS.length) alert('Game Over.');
+  if (cardCount === COLORS.length) alert("Game Over.");
 }
 // when the DOM loads
 createDivsForColors(shuffledColors);
